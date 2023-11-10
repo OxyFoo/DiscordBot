@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Architecture des bots discord de l'entreprise",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "node index.js",
+    "start": "node example.js",
     "test": "jest"
   },
   "repository": {
@@ -16,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/OxyFoo/DiscordBot/issues"
   },
-  "homepage": "https://github.com/OxyFoo/DiscordBot#readme"
+  "homepage": "https://github.com/OxyFoo/DiscordBot#readme",
+  "dependencies": {
+    "discord.js": "^14.13.0",
+    "dotenv": "^16.3.1"
+  }
 }
