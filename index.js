@@ -141,4 +141,5 @@ class DiscordBot {
     };
 }
 
+export { BotFeature };
 export default DiscordBot;
