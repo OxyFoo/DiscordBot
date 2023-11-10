@@ -1,0 +1,20 @@
+{
+  "name": "discordbot",
+  "version": "1.0.0",
+  "description": "Architecture des bots discord de l'entreprise",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OxyFoo/DiscordBot.git"
+  },
+  "author": "OxyFoo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OxyFoo/DiscordBot/issues"
+  },
+  "homepage": "https://github.com/OxyFoo/DiscordBot#readme"
+}
