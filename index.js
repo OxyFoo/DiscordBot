@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { Client, SlashCommandBuilder } from 'discord.js';
+import { Client, SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v10';
 import { GatewayIntentBits, Partials } from 'discord.js';
@@ -141,5 +141,5 @@ class DiscordBot {
     };
 }
 
-export { BotFeature, SlashCommandBuilder };
+export { BotFeature, SlashCommandBuilder, EmbedBuilder };
 export default DiscordBot;
