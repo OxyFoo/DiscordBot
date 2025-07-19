@@ -14,27 +14,22 @@ DISCORD_TOKEN=<YOUR_BOT_TOKEN>
 Pour ajouter une feature:
 
 1. Ajouter un répertoire avec le nom de la feature dans ./src/features/
-2. Ajouter un fichier `index.js` avec le contenu suivant
+2. Ajouter un fichier `index.ts` avec le contenu suivant
 
-```js
+```ts
 import OxyBotFeature from 'oxybot';
 
-/**
- * @typedef {import('oxybot').Message} Message
- * @typedef {import('oxybot').Interaction} Interaction
- */
+import type { Message, Interaction } from 'oxybot';
 
 class FEATURE_NAME extends OxyBotFeature {
     async onReady() {
     }
 
-    /** @param {Message} message */
-    async onMessage(message) {
+    async onMessage(message: Message) {
         return false;
     }
 
-    /** @param {Interaction} interaction */
-    async onInteraction(interaction) {
+    async onInteraction(interaction: Interaction) {
         return false;
     }
 }
@@ -42,4 +37,4 @@ class FEATURE_NAME extends OxyBotFeature {
 export default FEATURE_NAME;
 ```
 
-3. Ajouter la fonctionnalité (et son import) dans le fichier `index.js` au démarrage du bot
+3. Ajouter la fonctionnalité (et son import) dans le fichier `index.ts` au démarrage du bot
