@@ -1,31 +1,17 @@
-/**
- * @typedef {import('../index.js').default} Bot
- * @typedef {import('discord.js').Message} Message
- * @typedef {import('discord.js').Interaction} Interaction
- * @typedef {import('discord.js').SlashCommandBuilder} SlashCommandBuilder
- */
+import type Bot from '../index';
+import type { Message, Interaction, SlashCommandBuilder } from 'discord.js';
 
 class OxyBotFeature {
-    /** @type {Bot|null} */
-    bot = null;
+    bot: Bot | null = null;
 
-    /**
-     * @description If it has at least one id, only messages from these channels will be sent
-     * @type {Array<string>}
-     */
-    channelWhitelist = [];
+    /** If it has at least one id, only messages from these channels will be sent */
+    channelWhitelist: Array<string> = [];
 
-    /**
-     * @description Messages from these channels will be ignored (priority)
-     * @type {Array<string>}
-     */
-    channelBlacklist = [];
+    /** Messages from these channels will be ignored (priority) */
+    channelBlacklist: Array<string> = [];
 
-    /**
-     * @description Elements for transferring events to child classes
-     * @type {Array<OxyBotFeature>}
-     */
-    childs = [];
+    /** Elements for transferring events to child classes */
+    childs: Array<OxyBotFeature> = [];
 
 
 
@@ -41,27 +27,26 @@ class OxyBotFeature {
 
     /**
      * @description Return slash command to add to bot
-     * @returns {Promise<Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">[]>}
      */
-    async DefineSlashCommands() {
+    async DefineSlashCommands(): Promise<Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">[]> {
         return [];
     }
 
     /**
      * @description Called when a message is sended and pass through filters
-     * @param {Message} message
-     * @returns {Promise<boolean>} True if message is interpreted
+     * @returns True if message is interpreted
      */
-    async onMessage(message) {
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+    async onMessage(message: Message): Promise<boolean> {
         return false;
     }
 
     /**
      * @description Called when a interaction is sended and pass through filters
-     * @param {Interaction} interaction
-     * @returns {Promise<boolean>} True if interaction is interpreted
+     * @returns True if interaction is interpreted
      */
-    async onInteraction(interaction) {
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+    async onInteraction(interaction: Interaction): Promise<boolean> {
         return false;
     }
 
@@ -74,21 +59,15 @@ class OxyBotFeature {
 
     /**
      * Called when a message is sended and call event if message pass through filter functions
-     * @param {Message} message
-     * @returns {Promise<boolean>} True if message is interpreted
+     * @returns True if message is interpreted
      */
-    async parseMessage(message) {
+    async parseMessage(message: Message): Promise<boolean> {
         let output = this.filter(message.channelId) && await this.onMessage(message);
         output ||= await this.parseChilds(message);
         return output;
     }
 
-    /**
-     * @private
-     * @param {Message} message
-     * @returns {Promise<boolean>}
-     */
-    async parseChilds(message) {
+    private async parseChilds(message: Message): Promise<boolean> {
         let output = false;
         for (let c = 0; c < this.childs.length; c++) {
             const child = this.childs[c];
@@ -102,21 +81,15 @@ class OxyBotFeature {
 
     /**
      * Called when an interaction is sended and call event if interaction pass through filter functions
-     * @param {Interaction} interaction
-     * @returns {Promise<boolean>} True if interaction is interpreted
+     * @returns True if interaction is interpreted
      */
-    async parseInteraction(interaction) {
+    async parseInteraction(interaction: Interaction): Promise<boolean> {
         let output = this.filter(interaction.channelId) && await this.onInteraction(interaction);
         output ||= await this.parseInteractionChilds(interaction);
         return output;
     }
 
-    /**
-     * @private
-     * @param {Interaction} interaction
-     * @returns {Promise<boolean>}
-     */
-    async parseInteractionChilds(interaction) {
+    private async parseInteractionChilds(interaction: Interaction): Promise<boolean> {
         let output = false;
         for (let c = 0; c < this.childs.length; c++) {
             const child = this.childs[c];
@@ -129,11 +102,13 @@ class OxyBotFeature {
     }
 
     /**
-     * @private
-     * @param {string} channelID
-     * @returns {boolean} True if channel isn't in blacklist or it's in whitelist
+     * @returns True if channel isn't in blacklist or it's in whitelist
      */
-    filter(channelID) {
+    private filter(channelID: string | null): boolean {
+        if (channelID === null) {
+            return false;
+        }
+
         let keep = true;
         if (this.channelWhitelist.length) {
             keep = this.channelWhitelist.includes(channelID);

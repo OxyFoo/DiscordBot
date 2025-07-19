@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node example.js",
-    "test": "jest"
+    "build": "tsc",
+    "lint": "eslint . --ext .js,.ts",
+    "test": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -21,5 +23,15 @@
   "dependencies": {
     "discord.js": "^14.13.0",
     "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "@types/node": "^24.0.15",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@typescript-eslint/parser": "^8.37.0",
+    "eslint": "^9.31.0",
+    "globals": "^16.3.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.37.0"
   }
 }

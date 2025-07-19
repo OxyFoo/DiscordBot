@@ -1,20 +1,11 @@
 import 'dotenv/config';
-import { Client } from 'discord.js';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v10';
-import { GatewayIntentBits, Partials } from 'discord.js';
+import { GatewayIntentBits, Partials, Client } from 'discord.js';
+import type { Message, Interaction, Awaitable, ClientOptions } from 'discord.js';
 
 import OxyBotFeature from './src/feature.js';
-import { Sleep } from './src/functions.js';
-
-/**
- * @typedef {import('./src/feature.js').default} OxyBotFeature
- * @typedef {import('discord.js').Message} Message
- * @typedef {import('discord.js').Interaction} Interaction
- * 
- * @typedef {import('discord.js').ClientOptions} ClientOptions
- * @typedef {import('discord.js').Awaitable<void>} DiscordAwaitable
- */
+import { Sleep } from './src/utils.js';
 
 const DEFAULT_DISCORD_OPTIONS = {
     intents: [
@@ -29,23 +20,17 @@ const DEFAULT_DISCORD_OPTIONS = {
 };
 
 class OxyBot {
-    /**
-     * @private
-     * @type {string}
-     */
-    token = process.env.DISCORD_TOKEN;
+    private token: string | null = process.env.DISCORD_TOKEN || null;
+
+    private classes: Array<OxyBotFeature> = [];
+
+    client: Client;
 
     /**
-     * @private
-     * @type {Array<OxyBotFeature>}
+     * @param token Default set to process.env.DISCORD_TOKEN
+     * @param options Default set to DEFAULT_DISCORD_OPTIONS
      */
-    classes = [];
-
-    /**
-     * @param {string} [token] Default set to process.env.DISCORD_TOKEN
-     * @param {ClientOptions} [options] Default set to DEFAULT_DISCORD_OPTIONS
-     */
-    constructor(token = null, options = null) {
+    constructor(token: string | null = null, options: ClientOptions | null = null) {
         if (token !== null) {
             this.token = token;
         }
@@ -56,18 +41,23 @@ class OxyBot {
         this.client.on('interactionCreate', this.onInteraction.bind(this));
     }
 
-    /** @param {Array<OxyBotFeature>} classes */
-    Start(classes = []) {
+    /**
+     * @description Start the bot with the given classes.
+     * @param classes Array of OxyBotFeature classes to start with the bot.
+     * @throws Error if the token is not set.
+     */
+    Start(classes: Array<OxyBotFeature> = []) {
+        if (this.token === null) {
+            throw new Error('Token is not set, cannot start the bot.');
+        }
+
         this.classes = classes;
         this.classes.forEach(classs => classs.bot = this);
         this.client.login(this.token);
         process.addListener('SIGINT', this.destructor.bind(this));
     }
 
-    /**
-     * @private
-     */
-    async destructor() {
+    private async destructor() {
         console.log('\nExiting...');
         process.removeAllListeners('SIGINT');
 
@@ -81,13 +71,10 @@ class OxyBot {
     }
 
     /**
-     * @private
      * @description Event called when the bot is ready.
-     * @param {Client} client
-     * @returns {DiscordAwaitable}
      */
-    onReady(client) {
-        console.log(`Logged in as ${this.client.user.tag}!`);
+    private onReady(client: Client): Awaitable<void> {
+        console.log(`Logged in as '${client.user?.tag}'!`);
 
         this.InitSlashCommands();
         for (let i = 0; i < this.classes.length; i++) {
@@ -96,30 +83,36 @@ class OxyBot {
     }
 
     /**
-     * @private
      * @description Event called when a message is received.
-     * @param {Message} message
-     * @returns {DiscordAwaitable}
      */
-    onMessage(message) {
+    private onMessage(message: Message): Awaitable<void> {
         for (let i = 0; i < this.classes.length; i++) {
             this.classes[i].parseMessage(message);
         }
     }
 
     /**
-     * @private
      * @description Event called when a interaction is received.
-     * @param {Interaction} interaction
-     * @returns {DiscordAwaitable}
      */
-    onInteraction(interaction) {
+    private onInteraction(interaction: Interaction): Awaitable<void> {
         for (let i = 0; i < this.classes.length; i++) {
             this.classes[i].parseInteraction(interaction);
         }
     }
 
+    /**
+     * @description Initialize slash commands for the bot.
+     * @throws Error if the client user or token is not set.
+     */
     async InitSlashCommands() {
+        if (this.client.user === null) {
+            throw new Error('Client user is not set, cannot initialize slash commands.');
+        }
+
+        if (this.token === null) {
+            throw new Error('Token is not set, cannot initialize slash commands.');
+        }
+
         const rest = new REST({ version: '10' }).setToken(this.token);
         try {
             const commands = [];
