@@ -5,7 +5,7 @@
  * @typedef {import('discord.js').SlashCommandBuilder} SlashCommandBuilder
  */
 
-class BotFeature {
+class OxyBotFeature {
     /** @type {Bot|null} */
     bot = null;
 
@@ -23,7 +23,7 @@ class BotFeature {
 
     /**
      * @description Elements for transferring events to child classes
-     * @type {Array<BotFeature>}
+     * @type {Array<OxyBotFeature>}
      */
     childs = [];
 
@@ -143,4 +143,4 @@ class BotFeature {
     }
 }
 
-export default BotFeature;
+export default OxyBotFeature;

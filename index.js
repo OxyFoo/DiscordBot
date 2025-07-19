@@ -4,11 +4,11 @@ import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v10';
 import { GatewayIntentBits, Partials } from 'discord.js';
 
-import BotFeature from './src/feature.js';
+import OxyBotFeature from './src/feature.js';
 import { Sleep } from './src/functions.js';
 
 /**
- * @typedef {import('./src/feature.js').default} BotFeature
+ * @typedef {import('./src/feature.js').default} OxyBotFeature
  * @typedef {import('discord.js').Message} Message
  * @typedef {import('discord.js').Interaction} Interaction
  * 
@@ -28,7 +28,7 @@ const DEFAULT_DISCORD_OPTIONS = {
     ]
 };
 
-class DiscordBot {
+class OxyBot {
     /**
      * @private
      * @type {string}
@@ -37,7 +37,7 @@ class DiscordBot {
 
     /**
      * @private
-     * @type {Array<BotFeature>}
+     * @type {Array<OxyBotFeature>}
      */
     classes = [];
 
@@ -56,7 +56,7 @@ class DiscordBot {
         this.client.on('interactionCreate', this.onInteraction.bind(this));
     }
 
-    /** @param {Array<BotFeature>} classes */
+    /** @param {Array<OxyBotFeature>} classes */
     Start(classes = []) {
         this.classes = classes;
         this.classes.forEach(classs => classs.bot = this);
@@ -141,5 +141,5 @@ class DiscordBot {
     };
 }
 
-export { BotFeature };
-export default DiscordBot;
+export { OxyBotFeature };
+export default OxyBot;

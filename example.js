@@ -1,4 +1,4 @@
-import DiscordBot from './index.js';
+import OxyBot from './index.js';
 
-const bot = new DiscordBot();
+const bot = new OxyBot();
 bot.Start([]);

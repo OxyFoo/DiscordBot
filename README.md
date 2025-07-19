@@ -1,26 +1,30 @@
-# DiscordBot (npm lib)
-Architecture des bots discord de l'entreprise
+# OxyBot (npm lib)
+
+Architecture des bots discord pour l'entreprise OxyFoo.
 
 ## Configuration
+
 Définir les variables d'environnement suivantes (ou fichier .env)
 ```
 DISCORD_TOKEN=<YOUR_BOT_TOKEN>
 ```
 
 ## New feature
+
 Pour ajouter une feature:
 
 1. Ajouter un répertoire avec le nom de la feature dans ./src/features/
 2. Ajouter un fichier `index.js` avec le contenu suivant
+
 ```js
-import BotFeature from 'discordbot';
+import OxyBotFeature from 'oxybot';
 
 /**
- * @typedef {import('discordbot').Message} Message
- * @typedef {import('discordbot').Interaction} Interaction
+ * @typedef {import('oxybot').Message} Message
+ * @typedef {import('oxybot').Interaction} Interaction
  */
 
-class FEATURE_NAME extends BotFeature {
+class FEATURE_NAME extends OxyBotFeature {
     async onReady() {
     }
 
@@ -37,4 +41,5 @@ class FEATURE_NAME extends BotFeature {
 
 export default FEATURE_NAME;
 ```
+
 3. Ajouter la fonctionnalité (et son import) dans le fichier `index.js` au démarrage du bot
