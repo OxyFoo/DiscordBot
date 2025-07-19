@@ -2,7 +2,10 @@
   "name": "oxybot",
   "version": "1.0.0",
   "description": "Architecture des bots discord de l'entreprise",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "type": "module",
   "scripts": {
     "start": "node example.js",
